@@ -69,7 +69,8 @@ function HomeScreen({navigation}) {
     // });
   };
 
-  const goToPage = (route, params = {}) => () => {
+  const goToPage = (route, param = {}) => () => {
+    let params = {category_id: null, ...param};
     navigation.push(route, params);
   };
 
@@ -133,7 +134,7 @@ function HomeScreen({navigation}) {
           {layout.top_rated_products && layout.top_rated_products.length > 0 && (
             <>
               <SectonHeader
-                title={t("TOP_SELLERS")}
+                title={t("TOP_RATED")}
                 titleEnd={t("SEE_MORE")}
                 style={{marginTop: 8}}
                 onPress={goToPage("ProductScreen", {sortby: "rating"})}

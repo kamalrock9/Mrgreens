@@ -19,6 +19,7 @@ class ProductScreen extends React.PureComponent {
 
   constructor(props) {
     super(props);
+    console.log(props.navigation.state.params);
 
     const {category_id, featured, sortby, on_sale} = props.navigation.state.params;
     const {price} = props.appSettings;

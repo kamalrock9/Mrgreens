@@ -37,7 +37,7 @@ function CartPriceBreakup({applyCoupon, data, removeCoupon, shippingMethod}) {
           }}
           onPress={toggleCouponModal}>
           <Icon name="brightness-percent" type="MaterialCommunityIcons" size={24} />
-          <Text>Apply Promo Code/Vouncher</Text>
+          <Text>Apply Promo Code/Voucher</Text>
           <Icon name="ios-arrow-forward" size={24} style={{marginStart: "auto"}} />
         </Button>
 

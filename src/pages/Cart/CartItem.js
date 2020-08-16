@@ -5,29 +5,13 @@ import Modal from "react-native-modal";
 import Toast from "react-native-simple-toast";
 import {useSelector} from "react-redux";
 
-<<<<<<< HEAD
-const {height} = Dimensions.get("window");
-
-function CartItem({item, index, quantityIncrementDecremnt}) {
-=======
 function CartItem({item, index, manageQuanity, deleteCartItem}) {
->>>>>>> b2f71fb7134fc710665cea1ba15c45e42def9239
   const appSetting = useSelector(state => state.appSettings);
 
   const [isOpenModal, setModal] = useState(false);
 
-<<<<<<< HEAD
-  const closeModal = (item, itemEach) => () => {
-    if (item == "false") {
-      setModal(false);
-    } else {
-      setModal(false);
-      deleteItem(itemEach);
-    }
-=======
   const closeModal = () => {
     setModal(false);
->>>>>>> b2f71fb7134fc710665cea1ba15c45e42def9239
   };
 
   const openModal = () => {
@@ -42,25 +26,6 @@ function CartItem({item, index, manageQuanity, deleteCartItem}) {
     }
   };
 
-<<<<<<< HEAD
-  const increment = (itemEach, index) => () => {
-    let data = {
-      cart_item_key: itemEach.cart_item_key,
-      quantity: parseInt(itemEach.quantity) + 1,
-    };
-    if (itemEach.quantity > 0) {
-      setLoading(true);
-
-      ApiClient.get("/cart/update", data)
-        .then(response => {
-          setLoading(false);
-          quantityIncrementDecremnt && quantityIncrementDecremnt();
-        })
-        .catch(error => {
-          setLoading(false);
-          console.log(error);
-        });
-=======
   const increment = () => {
     let quantity = Number(item.quantity);
     if (item.manage_stock) {
@@ -71,36 +36,14 @@ function CartItem({item, index, manageQuanity, deleteCartItem}) {
       }
     } else {
       quantity++;
->>>>>>> b2f71fb7134fc710665cea1ba15c45e42def9239
     }
     if (quantity !== Number(item.quantity))
       manageQuanity && manageQuanity(item.cart_item_key, parseInt(item.quantity) + 1);
   };
 
-<<<<<<< HEAD
-  const deleteItem = itemEach => {
-    let data = {
-      cart_item_key: itemEach.cart_item_key,
-    };
-    setLoading(true);
-
-    ApiClient.get("/cart/remove", data)
-      .then(response => {
-        setLoading(false);
-
-        console.log(response);
-        quantityIncrementDecremnt && quantityIncrementDecremnt();
-      })
-      .catch(error => {
-        setLoading(false);
-
-        console.log(error);
-      });
-=======
   const deleteItem = () => {
     setModal(false);
     deleteCartItem && deleteCartItem(item.cart_item_key);
->>>>>>> b2f71fb7134fc710665cea1ba15c45e42def9239
   };
 
   return (
@@ -116,7 +59,7 @@ function CartItem({item, index, manageQuanity, deleteCartItem}) {
         <Image style={{height: 70, width: 70}} source={{uri: item.image}} />
         <View style={{marginStart: 16, flex: 1}}>
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-            <Text style={{fontWeight: "700"}}>{item.name}</Text>
+            <Text style={{fontWeight: "700", flex: 1}}>{item.name}</Text>
             <Button onPress={openModal}>
               <Icon type="MaterialIcons" name="delete" size={22} />
             </Button>

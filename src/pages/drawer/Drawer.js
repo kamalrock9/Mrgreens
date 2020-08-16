@@ -154,7 +154,7 @@ class Drawer extends React.PureComponent {
               </>
             )}
 
-            {direct_tawk_id && direct_tawk_id != "" && (
+            {direct_tawk_id != "" && (
               <Button
                 style={styles.button}
                 onPress={this.navigateToScreen("TawkToChat", {uri: direct_tawk_id})}>

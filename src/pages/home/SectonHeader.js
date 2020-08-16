@@ -1,6 +1,7 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Text, Button, Icon } from "components";
+import {View, StyleSheet} from "react-native";
+import {Text, Button, Icon} from "components";
+import {connect} from "react-redux";
 
 class SectonHeader extends React.PureComponent {
   constructor(props) {
@@ -12,13 +13,16 @@ class SectonHeader extends React.PureComponent {
     }
   };
   render() {
-    const { icon, title, titleEnd, style } = this.props;
+    const {icon, title, titleEnd, style} = this.props;
+    const {
+      appSettings: {accent_color},
+    } = this.props;
     return (
       <View style={[styles.container, style]}>
         <Text style={styles.title}>{title}</Text>
         <Button onPress={this._handleOnPress} style={styles.rightButton}>
-          <Text style={{ color: "#0275f9",fontSize:12 }}>{titleEnd}</Text>
-          <Icon name={icon} style={{ fontSize: 16, marginStart: 8,  }} color="#0275f9" />
+          <Text style={{color: accent_color, fontSize: 12}}>{titleEnd}</Text>
+          <Icon name={icon} style={{fontSize: 16, marginStart: 8}} color={accent_color} />
         </Button>
       </View>
     );
@@ -56,4 +60,6 @@ SectonHeader.defaultProps = {
   icon: "md-arrow-forward",
 };
 
-export default SectonHeader;
+const mapStateToProps = state => ({appSettings: state.appSettings});
+
+export default connect(mapStateToProps)(SectonHeader);

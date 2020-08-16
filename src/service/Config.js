@@ -11,12 +11,12 @@ const Constants = {
 };
 
 const ConstantsDemo = {
-  storeName: "WooApp",
-  baseURL: "https://app.tutiixx.com",
+  storeName: "Mr Greens",
+  baseURL: "http://mrgreens.in",
   path: "/wp-json/wc/v2",
   keys: {
-    consumerKey: "ck_240313b54a926b379613c352b179588ee757807f",
-    consumerSecret: "cs_406cf9c8094af5a5d2f987e1d3a9160fa9b6bfdb",
+    consumerKey: "ck_44f140bd8a187e78efc2b936149c38b12dc2d1cf",
+    consumerSecret: "cs_9e9e4bf1900beef87c1e68e4f74774a82679e91a",
   },
 };
 

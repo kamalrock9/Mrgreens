@@ -76,7 +76,9 @@ function Toolbar({
           </Button>
         )}
 
-        <Text style={[styles.title, {color: primary_color_text}]}>{t(title) || t(routeName)}</Text>
+        <Text style={[styles.title, {color: primary_color_text, flex: 1}]}>
+          {t(title) || t(routeName)}
+        </Text>
 
         <View style={styles.right}>
           {searchButton && (

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Image, StyleSheet, View} from "react-native";
+import {Image, StyleSheet, View, ImageBackground, Dimensions} from "react-native";
 import {saveAppSettings, getCartCount} from "store/actions";
 import {useSelector, useDispatch} from "react-redux";
 import {isEmpty} from "lodash";
@@ -27,6 +27,7 @@ i18n
     },
   });
 
+const {width, height} = Dimensions.get("window");
 function SplashScreen({navigation}) {
   const appSettings = useSelector(state => state.appSettings);
   const dispatch = useDispatch();
@@ -53,9 +54,15 @@ function SplashScreen({navigation}) {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Image source={require("../assets/icon/icon.png")} style={{width: 112, height: 112}} />
-    </View>
+    <ImageBackground
+      style={{width, height, alignItems: "center", justifyContent: "center"}}
+      source={require("../assets/imgs/splashBackground.png")}>
+      <Image
+        source={require("../assets/imgs/mrgreensLogo.png")}
+        style={{width: "100%"}}
+        resizeMode="contain"
+      />
+    </ImageBackground>
   );
 }
 
