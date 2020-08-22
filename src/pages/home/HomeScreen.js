@@ -6,8 +6,11 @@ import {
   ActivityIndicator,
   FlatList,
   unstable_batchedUpdates,
+  Dimensions,
+  Image,
+  TouchableOpacity,
 } from "react-native";
-import {Slider, Toolbar, Container} from "components";
+import {Slider, Toolbar, Container, Text} from "components";
 import {useSelector, useDispatch} from "react-redux";
 import {isEmpty} from "lodash";
 import CategoryItem from "./CategoryItem";
@@ -17,7 +20,9 @@ import {saveHomeLayout, saveNotification} from "store/actions";
 import {ApiClient} from "service";
 import {useTranslation} from "react-i18next";
 import OneSignal from "react-native-onesignal";
+import Carousel from "react-native-snap-carousel";
 
+const {width} = Dimensions.get("window");
 function HomeScreen({navigation}) {
   const [loading, setLoading] = useState(false);
   const layout = useSelector(state => state.homeLayout);
@@ -25,6 +30,30 @@ function HomeScreen({navigation}) {
   const dispatch = useDispatch();
 
   const _categoryKeyExtractor = item => "category_" + item.id;
+
+  const [activeIndex, setactiveIndex] = useState(0);
+  const [carouselItems] = useState([
+    {
+      title: "Item 1",
+      text: "Text 1",
+    },
+    {
+      title: "Item 2",
+      text: "Text 2",
+    },
+    {
+      title: "Item 3",
+      text: "Text 3",
+    },
+    {
+      title: "Item 4",
+      text: "Text 4",
+    },
+    {
+      title: "Item 5",
+      text: "Text 5",
+    },
+  ]);
 
   // const trackScreenView = async screen => {
   //   // Set & override the MainActivity screen name
@@ -80,6 +109,27 @@ function HomeScreen({navigation}) {
 
   const _renderItem = ({item, index}) => <CategoryItem item={item} index={index} />;
 
+  const gotoProductPage = item => () => {
+    console.log("banner");
+    let params = {category_id: null, id: item.id, name: item.name};
+    navigation.push("ProductScreen", params);
+  };
+
+  const _renderItemCrousel = ({item, index}) => {
+    return (
+      <TouchableOpacity onPress={gotoProductPage(item)}>
+        <Image
+          style={{width: "100%", height: 190, borderRadius: 4}}
+          source={{uri: item.banner_url}}
+          resizeMode={"contain"}
+        />
+        {/* <Text>{item.name}</Text> */}
+      </TouchableOpacity>
+    );
+  };
+
+  let carousel = null;
+
   if (loading) {
     return (
       <View style={styles.container}>
@@ -93,7 +143,7 @@ function HomeScreen({navigation}) {
       <Container>
         <Toolbar menuButton cartButton wishListButton searchButton title="HOME" />
         <ScrollView nestedScrollEnabled={true}>
-          <View>
+          {/* <View>
             <Slider
               //autoplay
               //autoplayLoop
@@ -101,9 +151,24 @@ function HomeScreen({navigation}) {
               data={layout.banner}
               approxHeight={180}
             />
-          </View>
+          </View> */}
+
+          <Carousel
+            layout={"default"}
+            ref={ref => {
+              carousel = ref;
+            }}
+            data={layout.banner}
+            sliderWidth={width}
+            sliderHeight={200}
+            itemWidth={300}
+            itemHeight={180}
+            renderItem={_renderItemCrousel}
+            onSnapToItem={index => setactiveIndex(index)}
+          />
 
           <SectonHeader
+            style={{marginTop: 4}}
             title={t("ALL_CATEGORIES")}
             titleEnd={t("VIEW_ALL")}
             onPress={openCategories}
@@ -111,12 +176,15 @@ function HomeScreen({navigation}) {
           />
 
           <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
+            style={{flex: 1}}
+            //horizontal
+            //  showsHorizontalScrollIndicator={false}
             data={layout.categories}
+            //data={categories}
             keyExtractor={_categoryKeyExtractor}
             renderItem={_renderItem}
-            removeClippedSubviews={true}
+            numColumns={3}
+            // removeClippedSubviews={true}
           />
 
           {layout.featured_products && layout.featured_products.length > 0 && (

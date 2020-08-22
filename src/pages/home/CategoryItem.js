@@ -1,9 +1,10 @@
 import React from "react";
-import {TouchableOpacity, ImageBackground} from "react-native";
+import {TouchableOpacity, ImageBackground, Dimensions} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import {useNavigation} from "react-navigation-hooks";
 import {Text} from "components";
 
+const {width} = Dimensions.get("window");
 function CategoryItem({item, index}) {
   const navigation = useNavigation();
 
@@ -14,8 +15,18 @@ function CategoryItem({item, index}) {
   return (
     <TouchableOpacity
       style={[
-        {width: 80, height: 60, borderRadius: 3, marginTop: 5, marginBottom: 15},
-        index == 0 ? {marginStart: 12, marginEnd: 10} : {marginEnd: 10},
+        {
+          width: width / 3 - 15,
+          alignItems: "center",
+          justifyContent: "center",
+          height: 150,
+          borderRadius: 4,
+          marginTop: 5,
+          marginBottom: 15,
+          backgroundColor: "#fff",
+          elevation: 2,
+        },
+        index == 0 || index % 3 == 0 ? {marginStart: 12, marginEnd: 10} : {marginEnd: 10},
       ]}
       onPress={goToProductScreen}>
       <ImageBackground
@@ -26,23 +37,19 @@ function CategoryItem({item, index}) {
               : item.image.src
             : "https://source.unsplash.com/1600x900/?" + item.name,
         }}
-        style={{width: 80, height: 60, flex: 1, borderRadius: 3}}
-        resizeMode="cover">
-        <LinearGradient
-          colors={["#afafaf5e", "#000000ff"]}
-          style={{position: "absolute", width: "100%", bottom: 0}}>
-          <Text
-            style={{
-              color: "white",
-              textAlign: "center",
-              fontSize: 10,
-              paddingVertical: 2,
-              fontWeight: "700",
-            }}>
-            {item.name.toUpperCase()}
-          </Text>
-        </LinearGradient>
-      </ImageBackground>
+        style={{width: 80, height: 60, borderRadius: 3}}
+        resizeMode="cover"
+      />
+      <Text
+        style={{
+          color: "black",
+          textAlign: "center",
+          fontSize: 10,
+          marginTop: 15,
+          fontWeight: "700",
+        }}>
+        {item.name.toUpperCase()}
+      </Text>
     </TouchableOpacity>
   );
 }

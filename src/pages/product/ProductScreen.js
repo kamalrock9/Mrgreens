@@ -21,7 +21,7 @@ class ProductScreen extends React.PureComponent {
     super(props);
     console.log(props.navigation.state.params);
 
-    const {category_id, featured, sortby, on_sale} = props.navigation.state.params;
+    const {category_id, featured, sortby, on_sale, id, name} = props.navigation.state.params;
     const {price} = props.appSettings;
 
     this.state = {
@@ -42,6 +42,8 @@ class ProductScreen extends React.PureComponent {
       category: category_id,
       min_price: price.min || 0,
       max_price: price.max || "",
+      id,
+      name,
     };
     this.attr = {};
   }

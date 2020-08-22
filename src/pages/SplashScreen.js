@@ -55,6 +55,7 @@ function SplashScreen({navigation}) {
 
   return (
     <ImageBackground
+      //resizeMode="contain"
       style={{width, height, alignItems: "center", justifyContent: "center"}}
       source={require("../assets/imgs/splashBackground.png")}>
       <Image

@@ -1,5 +1,13 @@
 import React, {useRef, useState, useCallback, useReducer} from "react";
-import {View, StyleSheet, TextInput, Dimensions, ActivityIndicator, Image} from "react-native";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  ActivityIndicator,
+  Image,
+  ImageBackground,
+} from "react-native";
 import {Icon, Text, Button, FloatingTextinput} from "components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import {useTranslation} from "react-i18next";
@@ -10,8 +18,7 @@ import {user, saveShipping} from "store/actions";
 import Toast from "react-native-simple-toast";
 import {GoogleSignin} from "@react-native-community/google-signin";
 import {LoginManager, AccessToken, GraphRequest, GraphRequestManager} from "react-native-fbsdk";
-
-const {width} = Dimensions.get("window");
+import {ScrollView} from "react-native-gesture-handler";
 
 const initialState = {
   loginEmail: "",
@@ -44,6 +51,7 @@ function reducer(state = initialState, action) {
   }
 }
 
+const {width, height} = Dimensions.get("window");
 function Auth({navigation}) {
   const [loading, setLoading] = useState(false);
   //return;
@@ -261,9 +269,11 @@ function Auth({navigation}) {
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      style={[styles.container, {width, height}]}
+      source={require("../../assets/imgs/splashBackground.png")}>
       <Button style={{padding: 8, alignSelf: "flex-start"}} onPress={goback}>
-        <Icon name="close" size={24} color="#000000" type="MaterialCommunityIcons" />
+        <Icon name="close" size={24} color="#ffffff" type="MaterialCommunityIcons" />
       </Button>
 
       <SwiperFlatList ref={scrollRef}>
@@ -271,55 +281,56 @@ function Auth({navigation}) {
           {/* <Text style={styles.title}>{t("WELCOME_TO_WOOAPP", {value: Constants.storeName})}</Text> */}
 
           <Image
-            source={require("../../assets/imgs/mrgreensLogo.png")}
-            style={{width: "100%", height: "20%"}}
+            source={require("../../assets/imgs/loginLogo.png")}
+            style={{width: "100%", height: "25%"}}
             resizeMode="contain"
           />
-          <Text style={[styles.subtitle, {marginTop: 60, alignSelf: "center"}]}>
-            {t("FASHION_INFO")}
-          </Text>
-          <View style={{width: "100%", flexDirection: "row", marginTop: 20}}>
-            <Button
-              style={[styles.socialBtn, {flex: 1, marginEnd: 8}]}
-              onPress={socialLogin("facebook")}>
-              <Icon name="logo-facebook" size={20} color="#000" />
-              <Text style={[styles.socialBtnText, {marginStart: 8}]}>{t("FACEBOOK")}</Text>
-            </Button>
-            <Button
-              style={[styles.socialBtn, {flex: 1, marginStart: 8}]}
-              onPress={socialLogin("google")}>
-              <Icon name="logo-google" size={20} color="#000" />
-              <Text style={[styles.socialBtnText, {marginStart: 8}]}>{t("GOOGLE")}</Text>
-            </Button>
-          </View>
-          <View style={{width: "100%", flexDirection: "row", marginVertical: 30}}>
-            <View style={styles.line} />
-            <Text style={styles.or}>{t("LOGIN_METHODS")}</Text>
-            <View style={styles.line} />
-          </View>
+          <View style={{backgroundColor: "white", opacity: 0.6, padding: 10, borderRadius: 8}}>
+            <Text style={[styles.subtitle, {marginTop: 30, alignSelf: "center"}]}>
+              {t("FASHION_INFO")}
+            </Text>
+            <View style={{width: "100%", flexDirection: "row", marginTop: 20}}>
+              <Button
+                style={[styles.socialBtn, {flex: 1, marginEnd: 8}]}
+                onPress={socialLogin("facebook")}>
+                <Icon name="logo-facebook" size={20} color="#000" />
+                <Text style={[styles.socialBtnText, {marginStart: 8}]}>{t("FACEBOOK")}</Text>
+              </Button>
+              <Button
+                style={[styles.socialBtn, {flex: 1, marginStart: 8}]}
+                onPress={socialLogin("google")}>
+                <Icon name="logo-google" size={20} color="#000" />
+                <Text style={[styles.socialBtnText, {marginStart: 8}]}>{t("GOOGLE")}</Text>
+              </Button>
+            </View>
+            <View style={{width: "100%", flexDirection: "row", marginVertical: 30}}>
+              <View style={styles.line} />
+              <Text style={styles.or}>{t("LOGIN_METHODS")}</Text>
+              <View style={styles.line} />
+            </View>
 
-          <TextInput
-            style={styles.textInput}
-            placeholder={"Email"}
-            placeholderTextColor={"grey"}
-            value={state.loginEmail}
-            onChangeText={onChangeEmail}
-          />
-          <TextInput
-            style={[styles.textInput, {marginTop: 20}]}
-            placeholder={"Password"}
-            placeholderTextColor={"grey"}
-            value={state.loginPassword}
-            onChangeText={onChangePassword}
-          />
-          {/* <FloatingTextinput
+            <TextInput
+              style={styles.textInput}
+              placeholder={"Email"}
+              placeholderTextColor={"grey"}
+              value={state.loginEmail}
+              onChangeText={onChangeEmail}
+            />
+            <TextInput
+              style={[styles.textInput, {marginTop: 20}]}
+              placeholder={"Password"}
+              placeholderTextColor={"grey"}
+              value={state.loginPassword}
+              onChangeText={onChangePassword}
+            />
+            {/* <FloatingTextinput
             label={t("EMAIL")}
             labelColor="#000000"
             style={{color: "#000000"}}
             value={state.loginEmail}
             onChangeText={onChangeEmail}
           /> */}
-          {/* <View style={{marginTop: 10}}>
+            {/* <View style={{marginTop: 10}}>
             <FloatingTextinput
               secureTextEntry={true}
               label={t("PASSWORD")}
@@ -329,83 +340,85 @@ function Auth({navigation}) {
               onChangeText={onChangePassword}
             />
           </View> */}
-          <Button style={{alignSelf: "center", marginTop: 16, paddingVertical: 4}}>
-            <Text style={styles.socialBtnText}>{t("FORGOT")}</Text>
-          </Button>
-
-          <Button style={[styles.btn, {backgroundColor: accent_color}]} onPress={_login}>
-            <Text style={styles.btnText}>{t("SIGN_IN")}</Text>
-          </Button>
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              marginBottom: 20,
-              alignItems: "center",
-              justifyContent: "center",
-              position: "absolute",
-              bottom: 0,
-            }}>
-            <Text style={styles.socialBtnText}>{t("DONT_HAVE_ACCOUNT")}</Text>
-            <Button style={{paddingHorizontal: 8}} onPress={goToLastIndex}>
-              <Text style={[styles.socialBtnText, {color: accent_color}]}>{t("SIGN_UP")}</Text>
+            <Button style={{alignSelf: "center", marginTop: 16, paddingVertical: 4}}>
+              <Text style={styles.socialBtnText}>{t("FORGOT")}</Text>
             </Button>
+
+            <Button style={[styles.btn, {backgroundColor: accent_color}]} onPress={_login}>
+              <Text style={styles.btnText}>{t("SIGN_IN")}</Text>
+            </Button>
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                marginBottom: 20,
+                alignItems: "center",
+                marginTop: 20,
+                justifyContent: "center",
+              }}>
+              <Text style={styles.socialBtnText}>{t("DONT_HAVE_ACCOUNT")}</Text>
+              <Button style={{paddingHorizontal: 8}} onPress={goToLastIndex}>
+                <Text style={[styles.socialBtnText, {color: accent_color}]}>{t("SIGN_UP")}</Text>
+              </Button>
+            </View>
           </View>
         </View>
+
         <View style={styles.slide1}>
           {/* <Text style={styles.title}>{t("WELCOME_TO_WOOAPP", {value: Constants.storeName})}</Text>
           <Text style={styles.subtitle}>{t("FASHION_INFO")}</Text> */}
           <Image
-            source={require("../../assets/imgs/mrgreensLogo.png")}
-            style={{width: "100%", height: "10%"}}
+            source={require("../../assets/imgs/loginLogo.png")}
+            style={{width: "100%", height: height / 6, marginTop: -40}}
             resizeMode="contain"
           />
-          <Text style={[styles.subtitle, {marginTop: 20, alignSelf: "center"}]}>
-            {t("FASHION_INFO")}
-          </Text>
-          <View style={{width: "100%", flexDirection: "row", marginTop: 20}}>
-            <Button
-              style={[styles.socialBtn, {flex: 1, marginEnd: 8}]}
-              onPress={socialLogin("facebook")}>
-              <Icon name="logo-facebook" size={20} color="#000" />
-              <Text style={[styles.socialBtnText, {marginStart: 8}]}>{t("FACEBOOK")}</Text>
-            </Button>
-            <Button
-              style={[styles.socialBtn, {flex: 1, marginStart: 8}]}
-              onPress={socialLogin("google")}>
-              <Icon name="logo-google" size={20} color="#000" />
-              <Text style={[styles.socialBtnText, {marginStart: 8}]}>{t("GOOGLE")}</Text>
-            </Button>
-          </View>
-          <View style={{width: "100%", flexDirection: "row", marginVertical: 30}}>
-            <View style={styles.line} />
-            <Text style={styles.or}>{t("OR")}</Text>
-            <View style={styles.line} />
-          </View>
+          <View style={{backgroundColor: "white", opacity: 0.6, padding: 10, borderRadius: 8}}>
+            <Text style={[styles.subtitle, {marginTop: 20, alignSelf: "center"}]}>
+              {t("FASHION_INFO")}
+            </Text>
+            <View style={{width: "100%", flexDirection: "row", marginTop: 20}}>
+              <Button
+                style={[styles.socialBtn, {flex: 1, marginEnd: 8}]}
+                onPress={socialLogin("facebook")}>
+                <Icon name="logo-facebook" size={20} color="#000" />
+                <Text style={[styles.socialBtnText, {marginStart: 8}]}>{t("FACEBOOK")}</Text>
+              </Button>
+              <Button
+                style={[styles.socialBtn, {flex: 1, marginStart: 8}]}
+                onPress={socialLogin("google")}>
+                <Icon name="logo-google" size={20} color="#000" />
+                <Text style={[styles.socialBtnText, {marginStart: 8}]}>{t("GOOGLE")}</Text>
+              </Button>
+            </View>
+            <View style={{width: "100%", flexDirection: "row", marginVertical: 30}}>
+              <View style={styles.line} />
+              <Text style={styles.or}>{t("OR")}</Text>
+              <View style={styles.line} />
+            </View>
 
-          <TextInput
-            style={styles.textInput}
-            placeholder={t("FIRST_NAME")}
-            placeholderTextColor={"grey"}
-            value={state.firstname}
-            onChangeText={onChangeFirstname}
-          />
+            <TextInput
+              style={styles.textInput}
+              placeholder={t("FIRST_NAME")}
+              placeholderTextColor={"grey"}
+              value={state.firstname}
+              onChangeText={onChangeFirstname}
+            />
 
-          {/* <FloatingTextinput
+            {/* <FloatingTextinput
             label={t("FIRST_NAME")}
             labelColor="#FFFFFF"
             style={{color: "#FFFFFF"}}
             value={state.firstname}
             onChangeText={onChangeFirstname}
           /> */}
-          <TextInput
-            style={[styles.textInput, {marginTop: 20}]}
-            placeholder={t("LAST_NAME")}
-            placeholderTextColor={"grey"}
-            value={state.lastname}
-            onChangeText={onChangeLastname}
-          />
-          {/* <View style={{marginTop: 10}}>
+            <TextInput
+              style={[styles.textInput, {marginTop: 20}]}
+              placeholder={t("LAST_NAME")}
+              placeholderTextColor={"grey"}
+              value={state.lastname}
+              onChangeText={onChangeLastname}
+            />
+            {/* <View style={{marginTop: 10}}>
             <FloatingTextinput
               label={t("LAST_NAME")}
               labelColor="#FFFFFF"
@@ -414,59 +427,58 @@ function Auth({navigation}) {
               onChangeText={onChangeLastname}
             />
           </View> */}
-          <TextInput
-            style={[styles.textInput, {marginTop: 20}]}
-            placeholder={t("EMAIL")}
-            placeholderTextColor={"grey"}
-            value={state.signUpEmail}
-            onChangeText={onChangeSignupEmail}
-          />
-          <TextInput
-            style={[styles.textInput, {marginTop: 20}]}
-            placeholder={t("PASSWORD")}
-            placeholderTextColor={"grey"}
-            value={state.password}
-            onChangeText={onChangepassword}
-          />
-          <TextInput
-            style={[styles.textInput, {marginTop: 20}]}
-            placeholder={t("CONFIRM_PASSWORD")}
-            placeholderTextColor={"grey"}
-            value={state.confirmPassword}
-            onChangeText={onChangeConfirmPassword}
-          />
+            <TextInput
+              style={[styles.textInput, {marginTop: 20}]}
+              placeholder={t("EMAIL")}
+              placeholderTextColor={"grey"}
+              value={state.signUpEmail}
+              onChangeText={onChangeSignupEmail}
+            />
+            <TextInput
+              style={[styles.textInput, {marginTop: 20}]}
+              placeholder={t("PASSWORD")}
+              placeholderTextColor={"grey"}
+              value={state.password}
+              onChangeText={onChangepassword}
+            />
+            <TextInput
+              style={[styles.textInput, {marginTop: 20}]}
+              placeholder={t("CONFIRM_PASSWORD")}
+              placeholderTextColor={"grey"}
+              value={state.confirmPassword}
+              onChangeText={onChangeConfirmPassword}
+            />
 
-          <Button style={[styles.btn, {backgroundColor: accent_color}]} onPress={_register}>
-            <Text style={styles.btnText}>{t("SIGN_UP")}</Text>
-          </Button>
-          <View
-            style={{
-              width: "100%",
-              marginBottom: 20,
-              alignItems: "center",
-              justifyContent: "center",
-              position: "absolute",
-              bottom: 0,
-            }}>
-            <Text
-              style={[
-                styles.socialBtnText,
-                {alignSelf: "center", justifyContent: "center", paddingStart: 16},
-              ]}>
-              By Singing up you will agree to our Privacy Policy and Terms
-            </Text>
+            <Button style={[styles.btn, {backgroundColor: accent_color}]} onPress={_register}>
+              <Text style={styles.btnText}>{t("SIGN_UP")}</Text>
+            </Button>
             <View
               style={{
                 width: "100%",
-                flexDirection: "row",
-                marginTop: 10,
+                marginBottom: 20,
                 alignItems: "center",
                 justifyContent: "center",
               }}>
-              <Text style={styles.socialBtnText}>{t("HAVE_AN_ACCOUNT")}</Text>
-              <Button style={{paddingHorizontal: 8}} onPress={goToFirstIndex}>
-                <Text style={[styles.socialBtnText, {color: accent_color}]}>{t("SIGN_IN")}</Text>
-              </Button>
+              <Text
+                style={[
+                  styles.socialBtnText,
+                  {alignSelf: "center", justifyContent: "center", paddingStart: 16},
+                ]}>
+                By Singing up you will agree to our Privacy Policy and Terms
+              </Text>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  marginTop: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}>
+                <Text style={styles.socialBtnText}>{t("HAVE_AN_ACCOUNT")}</Text>
+                <Button style={{paddingHorizontal: 8}} onPress={goToFirstIndex}>
+                  <Text style={[styles.socialBtnText, {color: accent_color}]}>{t("SIGN_IN")}</Text>
+                </Button>
+              </View>
             </View>
           </View>
         </View>
@@ -474,7 +486,7 @@ function Auth({navigation}) {
       {loading && (
         <ActivityIndicator style={{alignItems: "center", justifyContent: "center", flex: 1}} />
       )}
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -501,9 +513,10 @@ const styles = StyleSheet.create({
   },
   socialBtn: {
     flexDirection: "row",
-    borderColor: "#000000",
+    //borderColor: "#000000",
     borderRadius: 4,
-    borderWidth: 1,
+    // borderWidth: 1,
+    backgroundColor: "#ffffff",
     height: 40,
     paddingVertical: 4,
     alignItems: "center",
@@ -538,7 +551,8 @@ const styles = StyleSheet.create({
   textInput: {
     borderColor: "grey",
     borderRadius: 4,
-    borderWidth: 1,
+    //  borderWidth: 1,
+    backgroundColor: "#ffffff",
     paddingStart: 20,
     height: 40,
   },
