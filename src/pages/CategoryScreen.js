@@ -39,15 +39,18 @@ class CategoryScreen extends React.PureComponent {
 
   render() {
     return (
-      <ScrollView style={{paddingHorizontal: 10}}>
-        {this.props.categories.data != undefined && (
-          <TreeView
-            data={this.props.categories.data}
-            collapsedItemHeight={40}
-            onpress={this.gotoPage}
-          />
-        )}
-      </ScrollView>
+      <>
+        <Toolbar title="Categories" backButton />
+        <ScrollView style={{paddingHorizontal: 10}}>
+          {this.props.categories.data != undefined && (
+            <TreeView
+              data={this.props.categories.data}
+              collapsedItemHeight={40}
+              onpress={this.gotoPage}
+            />
+          )}
+        </ScrollView>
+      </>
     );
   }
 }

@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import {CustomPicker} from "react-native-custom-picker";
 import {useNavigation} from "react-navigation-hooks";
 import {updateBilling} from "store/actions";
+import {ApiClient} from "service";
 
 function BillingAddresss({}) {
   const navigation = useNavigation();
@@ -19,6 +20,14 @@ function BillingAddresss({}) {
     for (let i in appSettings.countries) arr.push({id: i, name: appSettings.countries[i]});
     console.log(arr);
     setCountry(arr);
+    ApiClient.get("/checkout/get_area")
+      .then(({data}) => {
+        console.log(data);
+        setareaArray(data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
 
   const [firstname, setFirstname] = useState(user.billing.first_name);
@@ -31,6 +40,8 @@ function BillingAddresss({}) {
   const [address2, setAddress2] = useState(user.billing.address_2);
   const [counrtyy, setCountryy] = useState(user.billing.country);
   const [state, setState] = useState(user.billing.state);
+  const [area, setArea] = useState("Select Any");
+  const [areaArray, setareaArray] = useState([]);
 
   const [country, setCountry] = useState([]);
 
@@ -86,9 +97,11 @@ function BillingAddresss({}) {
     return (
       <View style={styles.container}>
         <View>
-          {!selectedItem && <Text style={[styles.text, {color: "#000000"}]}>{defaultText}</Text>}
+          {!selectedItem && (
+            <Text style={[styles.text, {color: "#000000", paddingStart: 4}]}>{defaultText}</Text>
+          )}
           {selectedItem && (
-            <View style={{}}>
+            <View style={{paddingStart: 4}}>
               <Text style={[styles.text, {color: selectedItem.color}]}>
                 {getLabel(selectedItem)}
               </Text>
@@ -111,6 +124,11 @@ function BillingAddresss({}) {
   const setStateD = text => {
     setState(text.name);
     dispatchAction(updateBilling({...user.billing, state: text.name}));
+  };
+
+  const setAreaFun = text => {
+    console.log(text);
+    setArea(text.name);
   };
 
   return (
@@ -172,6 +190,19 @@ function BillingAddresss({}) {
           value={city}
           onChangeText={onChangeCity}
         />
+        <>
+          <Text style={{fontSize: 12, color: appSettings.accent_color, marginTop: 10}}>
+            {t("AREA")}
+          </Text>
+          <CustomPicker
+            options={areaArray}
+            placeholder={area}
+            getLabel={item => item.name}
+            optionTemplate={renderOption}
+            fieldTemplate={renderField}
+            onValueChange={value => setAreaFun(value)}
+          />
+        </>
         <FloatingTextinput
           label={t("POSTCODE")}
           labelColor="#000000"

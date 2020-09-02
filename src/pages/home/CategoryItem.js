@@ -48,7 +48,7 @@ function CategoryItem({item, index}) {
           marginTop: 15,
           fontWeight: "700",
         }}>
-        {item.name.toUpperCase()}
+        {item.name}
       </Text>
     </TouchableOpacity>
   );

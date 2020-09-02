@@ -5,9 +5,7 @@ import {isEmpty, isArray} from "lodash";
 import {ApiClient} from "service";
 import {useSelector} from "react-redux";
 function Review({cartData, orderData}) {
-  //console.log(cartData);
-  const CartData = cartData;
-  //console.log(CartData);
+  console.log(cartData);
 
   const appSettings = useSelector(state => state.appSettings);
 

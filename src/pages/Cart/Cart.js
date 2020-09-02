@@ -65,6 +65,7 @@ class Cart extends React.PureComponent {
       shipping_method: params ? params : "",
       user_id: 17,
     };
+    console.log(JSON.stringify(param));
     this.setState({loading: true});
     ApiClient.get("/cart", param)
       .then(({data}) => {

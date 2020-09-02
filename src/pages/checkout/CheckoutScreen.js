@@ -45,6 +45,7 @@ function CheckoutScreen({navigation}) {
   console.log(navigation.state.params);
   const [stepPos, setStepPos] = useState(0);
   const [shipToDifferent, setShipToDifferent] = useState(false);
+  const [pay_via_wallet, set_pay_via_wallet] = useState("");
 
   const {accent_color, primary_color, pincode_active} = useSelector(state => state.appSettings);
   const user = useSelector(state => state.user);
@@ -124,12 +125,13 @@ function CheckoutScreen({navigation}) {
         let u = user && user.id ? "?user_id=" + user.id : "?user_id=";
         let p = "&payment_method=" + orderdata.chosen_gateway;
         let c = "&shipping_method=" + orderdata.chosen_shipping_method;
-        //let pw = pay_via_wallet ? "&pay_via_wallet=" + pay_via_wallet : "";
+        let pw = pay_via_wallet ? "&pay_via_wallet=" + pay_via_wallet : "";
 
         setloading(true);
-        ApiClient.post("/checkout/new-order" + u + p + c, data)
+        ApiClient.post("/checkout/new-order" + u + p + c + pw, data)
           .then(resp => {
             setloading(false);
+            console.log("checkout screen");
             console.log(resp);
             ApiClient.get("/cart/clear")
               .then(res => {})
@@ -268,7 +270,12 @@ function CheckoutScreen({navigation}) {
               alignItems: "center",
             }}>
             <Text>Same For Shipping</Text>
-            <Switch onChange={onChangeShipToDifferent} value={shipToDifferent} />
+            <Switch
+              trackColor={{true: accent_color, false: "grey"}}
+              thumbColor={shipToDifferent ? "#fe7013" : "#ffffff"}
+              onChange={onChangeShipToDifferent}
+              value={shipToDifferent}
+            />
           </View>
         )}
         <View style={{flexDirection: "row", width: "100%"}}>

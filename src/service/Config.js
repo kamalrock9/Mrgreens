@@ -12,7 +12,7 @@ const Constants = {
 
 const ConstantsDemo = {
   storeName: "Mr Greens",
-  baseURL: "http://mrgreens.in",
+  baseURL: "https://mrgreens.in",
   path: "/wp-json/wc/v2",
   keys: {
     consumerKey: "ck_44f140bd8a187e78efc2b936149c38b12dc2d1cf",

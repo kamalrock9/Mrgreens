@@ -77,13 +77,13 @@
   "ADDRESS_1": "Address Line 1",
   "ADDRESS_2": "Address Line 2",
   "PROFILE_UPDATED": "Profile updated",
-  "SETTING": "Setting",
+  "SETTING": "Settings",
   "ADDRESS": "Address",
   "BILLING": "Billing",
   "SHIPPING": "Shipping",
   "NO_ADDRESS_SAVED": "You have not saved any address yet.",
   "ADDRESS_USE": "Address will be used on the checkout page by default.",
-  "TOS": "Terms of Service",
+  "TOS": "Terms & Conditions",
   "APP": "App",
   "VERSION": "Version",
   "PASSWORD": "Password",
@@ -161,7 +161,7 @@
   "TOP_SELLERS": "Top Sellers",
   "TRENDING_OFFERS": "Trending Offers",
   "TOP_RATED": "Top Rated",
-  "INFORMATION": "information",
+  "INFORMATION": "Information",
   "PASSWORD_INFO": "leave blank to leave unchanged",
   "DONE": "Done",
   "APPLY_COUPON": "Apply Coupon",
@@ -243,5 +243,6 @@
   "REFER_EARN_DESC": "Invite your friends on {{ storeName }} and get {{amount_referrer}} as wallet credit. Your friend Will also get {{amount_earner}} as wallet credit.",
   "TOTAL_SALE_SAVING": "You save",
   "SEE_MORE": "See More",
-  "CALL": "CALL"
+  "CALL": "CALL",
+  "AREA": "Select Area"
 }

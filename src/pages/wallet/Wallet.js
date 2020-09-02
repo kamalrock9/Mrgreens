@@ -3,7 +3,7 @@ import {Text, Toolbar, Button, Icon, HTMLRender, FloatingTextinput, EmptyList} f
 import React, {useEffect, useState, useCallback} from "react";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
-import {ApiClient} from "service";
+import {ApiClient, WooCommerce} from "service";
 import {FlatList} from "react-native-gesture-handler";
 import moment from "moment";
 import Modal from "react-native-modal";
@@ -32,6 +32,23 @@ function Wallet({navigation}) {
       if (amount != "") {
         console.log(amount);
         setModal(false);
+        let data = {
+          woo_add_to_wallet: "Add",
+          woo_wallet_balance_to_add: amount,
+        };
+        setloading(true);
+        ApiClient.post("/wallet/add", data)
+          .then(({data}) => {
+            setloading(false);
+            console.log(data);
+            if (data.code == 1) {
+              Toast.show(data.message, Toast.SHORT);
+            }
+          })
+          .catch(error => {
+            setloading(false);
+            console.log(error);
+          });
       } else {
         Toast.show("Please enter the amount");
       }
@@ -53,10 +70,13 @@ function Wallet({navigation}) {
     setloading(true);
     ApiClient.get("/wallet?uid=" + user.id)
       .then(({data}) => {
+        console.log(data);
         unstable_batchedUpdates(() => {
           setloading(false);
           setRefreshing(false);
-          setTransaction(data.transaction);
+          if (data.transaction != "No transactions found") {
+            setTransaction(data.transaction);
+          }
           setBalance(data.balance);
         });
       })
@@ -153,7 +173,7 @@ function TransactionItem({item, index}) {
       <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 8}}>
         <Text style={styles.details}>{item.details || "No details"}</Text>
         <HTMLRender
-          html={item.amount}
+          html={item.amount ? item.amount : "<b></b>"}
           baseFontStyle={[{color: item.type == "credit" ? "green" : "red"}, styles.details]}
         />
       </View>

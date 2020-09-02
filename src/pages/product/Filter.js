@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {View, StatusBar, StyleSheet, Platform, ScrollView} from "react-native";
+import {View, StatusBar, StyleSheet, Platform, ScrollView, TouchableOpacity} from "react-native";
 import {Text, Icon, Button, CheckBox, Container} from "components";
 import {useSelector, useDispatch} from "react-redux";
 import {useTranslation} from "react-i18next";
@@ -104,8 +104,8 @@ function Filter({onBackPress, onFilter, filterData, attributes, seletedAttr = {}
               style={{
                 marginHorizontal: Platform.OS == "ios" ? 10 : 0,
                 alignItems: "center",
-                paddingHorizontal: 8,
-                paddingVertical: 16,
+                paddingHorizontal: 12,
+                paddingBottom: 16,
               }}>
               <MultiSlider
                 containerStyle={{marginHorizontal: Platform.OS == "ios" ? 10 : 0}}
@@ -117,7 +117,7 @@ function Filter({onBackPress, onFilter, filterData, attributes, seletedAttr = {}
                   height: 20,
                   width: 20,
                 }}
-                sliderLength={170}
+                sliderLength={150}
                 min={price.min}
                 max={price.max}
                 values={[priceFilter.min_price, priceFilter.max_price]}
@@ -144,12 +144,30 @@ function Filter({onBackPress, onFilter, filterData, attributes, seletedAttr = {}
                 padding: 8,
               }}>
               {categories.data.map((item, index) => (
-                <CheckBox
-                  label={item.name}
-                  key={"categories" + item + index}
-                  checked={category == item.id}
+                <TouchableOpacity
                   onPress={() => setCategoryID(item.id)}
-                />
+                  style={{
+                    flexDirection: "row",
+                    padding: 16,
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                  key={"categories" + item + index}>
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    color={category == item.id ? primary_color : "#00000099"}
+                    size={24}
+                    name={category == item.id ? "radiobox-marked" : "radiobox-blank"}
+                  />
+
+                  <Text style={{marginStart: 16, flex: 1}}>{item.name}</Text>
+                </TouchableOpacity>
+                // <CheckBox
+                //   label={item.name}
+                //   key={"categories" + item + index}
+                //   checked={category == item.id}
+                //   onPress={() => setCategoryID(item.id)}
+                // />
               ))}
             </View>
           )}

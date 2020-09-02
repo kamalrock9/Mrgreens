@@ -34,6 +34,8 @@ import PaymentPage from "./src/pages/checkout/PaymentPage";
 import Auth from "./src/pages/auth/Login";
 import Reviews from "./src/pages/product/Reviews";
 import AddReview from "./src/pages/product/AddReview";
+import PostRegisterOTP from "./src/pages/auth/PostRegisterOtp";
+import PostRegisterOTPVerify from "./src/pages/auth/PostRegisterOTPVerify";
 //Redux
 import {persistor, store} from "./src/store";
 import {Provider} from "react-redux";
@@ -64,6 +66,8 @@ const HomeStack = createStackNavigator(
     Auth,
     Reviews,
     AddReview,
+    PostRegisterOTP,
+    PostRegisterOTPVerify,
   },
   {
     defaultNavigationOptions: {
@@ -81,6 +85,8 @@ const CategoryStack = createStackNavigator(
     Search,
     CheckoutScreen,
     Auth,
+    PostRegisterOTP,
+    PostRegisterOTPVerify,
   },
   {
     defaultNavigationOptions: {
@@ -101,6 +107,8 @@ const ProductStack = createStackNavigator(
     Auth,
     Reviews,
     AddReview,
+    PostRegisterOTP,
+    PostRegisterOTPVerify,
   },
   {
     defaultNavigationOptions: {

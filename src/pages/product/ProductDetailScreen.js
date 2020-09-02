@@ -74,48 +74,48 @@ class ProductDetailScreen extends React.PureComponent {
     if (this.state.product.upsell_ids.length > 0) {
       ApiClient.get("/get-products-by-id", {include: this.state.product.upsell_ids.join()})
         .then(({data}) => {
-          this.setState((prevState) => ({
+          this.setState(prevState => ({
             product: {...prevState.product, upsell: data},
           }));
         })
-        .catch((error) => {});
+        .catch(error => {});
     }
     if (this.state.product.related_ids.length > 0) {
       ApiClient.get("/get-products-by-id", {include: this.state.product.related_ids.join()})
         .then(({data}) => {
-          this.setState((prevState) => ({
+          this.setState(prevState => ({
             product: {...prevState.product, related: data},
           }));
         })
-        .catch((error) => {});
+        .catch(error => {});
     }
     if (this.state.product.grouped_products.length > 0) {
       ApiClient.get("/get-products-by-id", {include: this.state.product.grouped_products.join()})
         .then(({data}) => {
-          let newData = data.map((item) => {
+          let newData = data.map(item => {
             let varia = {...item, quantity: 0};
             return varia;
           });
           console.log(newData);
-          this.setState((prevState) => ({
+          this.setState(prevState => ({
             product: {...prevState.product, group: newData},
           }));
         })
-        .catch((error) => {});
+        .catch(error => {});
     }
   };
 
   shareProduct = () => {
     RNFetchBlob.fetch("GET", this.state.product.images[0].src)
-      .then((resp) => {
+      .then(resp => {
         console.log("response : ", resp);
         let base64image = resp.data;
         this.share("data:image/png;base64," + base64image);
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
-  share = (base64image) => {
+  share = base64image => {
     let shareOptions = {
       title: "Share " + this.state.product.name,
       url: base64image,
@@ -123,10 +123,10 @@ class ProductDetailScreen extends React.PureComponent {
       subject: this.state.product.name,
     };
     Share.open(shareOptions)
-      .then((res) => {
+      .then(res => {
         console.log(res);
       })
-      .catch((err) => {
+      .catch(err => {
         err && console.log(err);
       });
   };
@@ -146,7 +146,7 @@ class ProductDetailScreen extends React.PureComponent {
         enableUrlBarHiding: true,
         enableDefaultShare: true,
         forceCloseOnRedirection: true,
-      }).then((result) => {
+      }).then(result => {
         //Toast.show(result);
       });
     } else {
@@ -154,7 +154,8 @@ class ProductDetailScreen extends React.PureComponent {
     }
   };
 
-  _increaseCounter = (i) => () => {
+  _increaseCounter = i => {
+    console.log("inc");
     const {variation, product} = this.state;
     let quantity = this.state.quantity;
 
@@ -204,7 +205,8 @@ class ProductDetailScreen extends React.PureComponent {
     this.setState({quantity});
   };
 
-  _decreaseCounter = (index) => {
+  _decreaseCounter = index => {
+    console.log("decrease");
     const {quantity, product} = this.state;
     console.log(quantity);
     console.log(product);
@@ -222,7 +224,7 @@ class ProductDetailScreen extends React.PureComponent {
     }
   };
 
-  checkBox = (i) => () => {
+  checkBox = i => () => {
     const {quantity, product, checked} = this.state;
     console.log(quantity);
     console.log(product);
@@ -241,7 +243,7 @@ class ProductDetailScreen extends React.PureComponent {
     }
   };
 
-  gotoProductDetailPage = (item) => () => {
+  gotoProductDetailPage = item => () => {
     console.log("kamal");
     this.props.navigation.push("ProductDetailScreen", item);
   };
@@ -253,7 +255,7 @@ class ProductDetailScreen extends React.PureComponent {
     switch (product.type) {
       case "grouped":
         if (
-          product.group.every((element) => {
+          product.group.every(element => {
             return element.quantity == 0;
           })
         ) {
@@ -299,10 +301,11 @@ class ProductDetailScreen extends React.PureComponent {
       }
     }
 
+    console.log(data);
     ApiClient.post("/cart/add", data)
       .then(({data}) => {
         this.setState({
-          cartMsg: Array.isArray(data) ? data.map((e) => e.message).join(", ") : data.message,
+          cartMsg: Array.isArray(data) ? data.map(e => e.message).join(", ") : data.message,
         });
         if (this.isError(data)) {
           console.log("error");
@@ -315,14 +318,14 @@ class ProductDetailScreen extends React.PureComponent {
           }
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
 
   isError(data) {
     if (Array.isArray(data)) {
-      return data.every((e) => e.code === "0");
+      return data.every(e => e.code === "0");
     } else {
       return data.code == 0;
     }
@@ -332,13 +335,13 @@ class ProductDetailScreen extends React.PureComponent {
     this.setState({modalVisible: false});
   };
 
-  gotoReviews = (product) => () => {
+  gotoReviews = product => () => {
     this.props.navigation.navigate("Reviews", product);
   };
 
-  onVariationChange = (item) => (option) => {
+  onVariationChange = item => option => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         selectedAttrs: {
           ...prevState.selectedAttrs,
           [item.slug]: option && option.slug ? option.slug : option,
@@ -365,7 +368,7 @@ class ProductDetailScreen extends React.PureComponent {
           this.setState({variation: data});
         }
       })
-      .catch((err) => {
+      .catch(err => {
         Toast.show("Something went wrong! Try later");
       });
   }
@@ -382,7 +385,7 @@ class ProductDetailScreen extends React.PureComponent {
         console.log(data);
         this.setState({loading: false, deliverDetails: data});
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({loading: false});
         console.log(error);
       });
@@ -457,7 +460,7 @@ class ProductDetailScreen extends React.PureComponent {
               <Slider
                 data={
                   variation.image
-                    ? unionBy([variation.image], product.images, (x) => x.id)
+                    ? unionBy([variation.image], product.images, x => x.id)
                     : product.images
                 }
               />
@@ -535,7 +538,7 @@ class ProductDetailScreen extends React.PureComponent {
                     return (
                       <CustomPicker
                         options={item.options}
-                        getLabel={(option) => (option && option.slug ? option.name : option)}
+                        getLabel={option => (option && option.slug ? option.name : option)}
                         fieldTemplate={PickerField}
                         placeholder={item.name}
                         modalAnimationType="slide"
@@ -572,7 +575,7 @@ class ProductDetailScreen extends React.PureComponent {
                     <TextInput
                       placeholder={t("ENTER_POSTCODE")}
                       value={postcode}
-                      onChangeText={(text) => this.setState({postcode: text})}
+                      onChangeText={text => this.setState({postcode: text})}
                     />
                     <Button
                       style={{
@@ -648,7 +651,7 @@ class ProductDetailScreen extends React.PureComponent {
               <View style={styles.cardItem}>
                 <SpecificationRow
                   leftContent="Categories"
-                  rightContent={product.categories.map((item) => item.name).join(", ")}
+                  rightContent={product.categories.map(item => item.name).join(", ")}
                 />
 
                 {product.hasOwnProperty("total_sales") && (
@@ -672,7 +675,7 @@ class ProductDetailScreen extends React.PureComponent {
                 {product.attributes.map((item, index) => (
                   <SpecificationRow
                     leftContent={item.name}
-                    rightContent={item.options.map((opt) => (opt.slug ? opt.name : opt)).join(", ")}
+                    rightContent={item.options.map(opt => (opt.slug ? opt.name : opt)).join(", ")}
                     key={item.name + index}
                   />
                 ))}
@@ -824,7 +827,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   appSettings: state.appSettings,
   shipping: state.shipping,
 });
@@ -832,4 +835,7 @@ const mapDispatchToProps = {
   getCartCount,
   changeShippingPincode,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProductDetailScreen));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(ProductDetailScreen));

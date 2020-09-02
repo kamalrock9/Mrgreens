@@ -29,7 +29,7 @@ function ReferAndEarn({navigation}) {
         if (res.status == 200) {
           console.log(res);
           res.data.htmlMsg =
-            "Invite your friends on WooApp and get " +
+            "Invite your friends on MrGreens and get " +
             res.data.amount_referrer +
             " as wllet credit.Your friend will also get " +
             res.data.amount_earner +

@@ -7,18 +7,17 @@ import {
   ActivityIndicator,
   Image,
   ImageBackground,
+  ScrollView,
 } from "react-native";
-import {Icon, Text, Button, FloatingTextinput} from "components";
+import {Icon, Text, Button} from "components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import Constants from "service/Config";
 import {ApiClient} from "service";
 import {user, saveShipping} from "store/actions";
 import Toast from "react-native-simple-toast";
 import {GoogleSignin} from "@react-native-community/google-signin";
 import {LoginManager, AccessToken, GraphRequest, GraphRequestManager} from "react-native-fbsdk";
-import {ScrollView} from "react-native-gesture-handler";
 
 const initialState = {
   loginEmail: "",
@@ -57,7 +56,6 @@ function Auth({navigation}) {
   //return;
   const {NeedLogin, NeedRegister} = navigation.state.params;
   const {accent_color} = useSelector(state => state.appSettings);
-  console.log(NeedRegister);
   const {t} = useTranslation();
   const dispatchAction = useDispatch();
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -69,10 +67,12 @@ function Auth({navigation}) {
   }
 
   const goToFirstIndex = () => {
+    console.log(scrollRef.current);
     scrollRef.current.goToFirstIndex();
   };
 
   const goToLastIndex = () => {
+    console.log(scrollRef.current.goToLastIndex());
     scrollRef.current.goToLastIndex();
   };
 
@@ -124,7 +124,6 @@ function Auth({navigation}) {
             setLoading(false);
             if (data.code == 1) {
               saveDetails(data.details);
-
               //  onClose && onClose();
               if (NeedLogin) {
                 navigation.goBack();
@@ -232,6 +231,7 @@ function Auth({navigation}) {
           return;
         }
         setLoading(true);
+        console.log(bodyFormData);
         ApiClient.post("/register", bodyFormData, {
           config: {headers: {"Content-Type": "multipart/form-data"}},
         })
@@ -268,6 +268,10 @@ function Auth({navigation}) {
     );
   };
 
+  const navigateToScreen = key => () => {
+    navigation.navigate("PostRegisterOTP", {key: key});
+  };
+
   return (
     <ImageBackground
       style={[styles.container, {width, height}]}
@@ -277,7 +281,15 @@ function Auth({navigation}) {
       </Button>
 
       <SwiperFlatList ref={scrollRef}>
-        <View style={styles.slide1}>
+        <ScrollView
+          contentContainerStyle={{
+            height: height,
+            width: width,
+            paddingEnd: 16,
+            paddingStart: 16,
+          }}
+          showsVerticalScrollIndicator={false}>
+          {/* <View style={styles.slide1}> */}
           {/* <Text style={styles.title}>{t("WELCOME_TO_WOOAPP", {value: Constants.storeName})}</Text> */}
 
           <Image
@@ -347,6 +359,11 @@ function Auth({navigation}) {
             <Button style={[styles.btn, {backgroundColor: accent_color}]} onPress={_login}>
               <Text style={styles.btnText}>{t("SIGN_IN")}</Text>
             </Button>
+            <Button
+              style={[styles.btn, {backgroundColor: accent_color}]}
+              onPress={navigateToScreen("Login")}>
+              <Text style={styles.btnText}>Login Via OTP</Text>
+            </Button>
             <View
               style={{
                 width: "100%",
@@ -362,14 +379,23 @@ function Auth({navigation}) {
               </Button>
             </View>
           </View>
-        </View>
+          {/* </View> */}
+        </ScrollView>
 
-        <View style={styles.slide1}>
+        <ScrollView
+          contentContainerStyle={{
+            height: height + height / 6,
+            width: width,
+            paddingEnd: 16,
+            paddingStart: 16,
+          }}
+          showsVerticalScrollIndicator={false}>
+          {/* <View style={styles.slide1}> */}
           {/* <Text style={styles.title}>{t("WELCOME_TO_WOOAPP", {value: Constants.storeName})}</Text>
           <Text style={styles.subtitle}>{t("FASHION_INFO")}</Text> */}
           <Image
             source={require("../../assets/imgs/loginLogo.png")}
-            style={{width: "100%", height: height / 6, marginTop: -40}}
+            style={{width: "100%", height: height / 4}}
             resizeMode="contain"
           />
           <View style={{backgroundColor: "white", opacity: 0.6, padding: 10, borderRadius: 8}}>
@@ -452,6 +478,11 @@ function Auth({navigation}) {
             <Button style={[styles.btn, {backgroundColor: accent_color}]} onPress={_register}>
               <Text style={styles.btnText}>{t("SIGN_UP")}</Text>
             </Button>
+            <Button
+              style={[styles.btn, {backgroundColor: accent_color}]}
+              onPress={navigateToScreen("Register")}>
+              <Text style={styles.btnText}>Register Via OTP</Text>
+            </Button>
             <View
               style={{
                 width: "100%",
@@ -481,7 +512,8 @@ function Auth({navigation}) {
               </View>
             </View>
           </View>
-        </View>
+        </ScrollView>
+        {/* </View> */}
       </SwiperFlatList>
       {loading && (
         <ActivityIndicator style={{alignItems: "center", justifyContent: "center", flex: 1}} />

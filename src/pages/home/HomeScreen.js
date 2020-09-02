@@ -21,8 +21,9 @@ import {ApiClient} from "service";
 import {useTranslation} from "react-i18next";
 import OneSignal from "react-native-onesignal";
 import Carousel from "react-native-snap-carousel";
+import FitImage from "react-native-fit-image";
 
-const {width} = Dimensions.get("window");
+const {width, height} = Dimensions.get("window");
 function HomeScreen({navigation}) {
   const [loading, setLoading] = useState(false);
   const layout = useSelector(state => state.homeLayout);
@@ -186,6 +187,33 @@ function HomeScreen({navigation}) {
             numColumns={3}
             // removeClippedSubviews={true}
           />
+
+          <View>
+            {layout.custom_banner.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  style={{
+                    borderRadius: 2,
+                    marginHorizontal: 16,
+                    marginTop: index > 0 ? 10 : 0,
+                    elevation: 2,
+                    backgroundColor: "#fff",
+                  }}
+                  onPress={gotoProductPage(item)}
+                  key={item + "item" + index}>
+                  <Image
+                    resizeMode="contain"
+                    style={{
+                      height: 200,
+                      width: width - 32,
+                      borderRadius: 2,
+                    }}
+                    source={{uri: item.custom_banner_url || item.src}}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
 
           {layout.featured_products && layout.featured_products.length > 0 && (
             <>
