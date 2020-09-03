@@ -204,7 +204,7 @@ function HomeScreen({navigation}) {
                   <Image
                     resizeMode="contain"
                     style={{
-                      height: 200,
+                      height: 190,
                       width: width - 32,
                       borderRadius: 2,
                     }}
