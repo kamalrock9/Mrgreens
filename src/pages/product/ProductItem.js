@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View, StyleSheet, TouchableWithoutFeedback} from "react-native";
+import {Image, View, StyleSheet, TouchableWithoutFeedback} from "react-native";
 import {useSelector} from "react-redux";
 import {useNavigation} from "react-navigation-hooks";
 import {HTMLRender, Text, WishlistIcon} from "components";
@@ -20,7 +20,12 @@ function ProductItem({containerStyle, width: width, item}) {
     <TouchableWithoutFeedback onPress={goToProductDetails}>
       <View style={[containerStyle, styles.container, {width}]}>
         {item.images.length > 0 && (
-          <FitImage source={{uri: item.images[0].src}} indicatorColor={accent_color} />
+          <Image
+            resizeMode="contain"
+            style={{width: width, height: 150}}
+            source={{uri: item.images[0].src}}
+            indicatorColor={accent_color}
+          />
         )}
         <View>
           <Text style={[styles.itemMargin, {fontWeight: "600"}]} numberOfLines={1}>
