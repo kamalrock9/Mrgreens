@@ -5585,10 +5585,10 @@ react-native-raw-bottom-sheet@^2.0.6:
   resolved "https://registry.yarnpkg.com/react-native-raw-bottom-sheet/-/react-native-raw-bottom-sheet-2.0.6.tgz#485dedc3e1828f2d55179bb598ef58987c41ebf1"
   integrity sha512-DLH97BjJEl4BfNgxPVhqwwNxv1i6Cna1Ns0DWtfqLlMEJeR9K7rrwnDndB2vN5Sk0FeV8Cjt/lk20oCSI+v21g==
 
-react-native-razorpay@^2.1.33:
-  version "2.1.33"
-  resolved "https://registry.yarnpkg.com/react-native-razorpay/-/react-native-razorpay-2.1.33.tgz#c68b6994428badf39b7cb577d5d7e8d8af8f2c6f"
-  integrity sha512-m9Cda5ajXioxaJDi+u/Espr+jEV8FZZ+5j3GDFQ0lE/wsxeMWnHaHOEnMZMbHhdGwxD+I9juuM73Q/Tk3nFzZQ==
+react-native-razorpay@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-razorpay/-/react-native-razorpay-2.2.0.tgz#400a2c367cd174909d98238d77bedd742a4a4d70"
+  integrity sha512-6ayEeVUZu6N+lx4HRDNO35pchJZQh1mP6mPx7JkE0OTTlfCT22pq+th+qRGi7mD3ZM1qI03QDdrg8iNGKcRREg==
 
 react-native-reanimated@^1.4.0:
   version "1.4.0"

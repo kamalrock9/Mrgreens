@@ -40,7 +40,7 @@ function Notification() {
           color="#fff"
           style={{marginRight: 10}}
         />
-        <Text style={{color: "#fff", fontWeight: "300"}}>Remove</Text>
+        <Text style={{color: "#fff", fontWeight: "400"}}>Remove</Text>
       </Button>
     );
   };

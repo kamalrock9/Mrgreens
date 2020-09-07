@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-paytm/RNPayTm.podspec b/node_modules/react-native-paytm/RNPayTm.podspec
+index efdf253..ec6a189 100644
+--- a/node_modules/react-native-paytm/RNPayTm.podspec
++++ b/node_modules/react-native-paytm/RNPayTm.podspec
+@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
+   s.license      = package['license']
+ 
+   s.authors      = package['author']
+-  s.homepage     = package['homepage']
++  s.homepage     = 'https://github.com/DeveloperDen/react-native-paytm'
+   s.platform     = :ios, "9.0"
+ 
+   s.source       = { :git => "https://github.com/DeveloperDen/react-native-paytm.git", :tag => "v#{s.version}" }

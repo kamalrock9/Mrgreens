@@ -111,7 +111,7 @@ function Search({navigation}) {
           />
         )}
         {textinput != "" && (
-          <Text style={{alignSelf: "center", fontWeight: "300", marginTop: 16}}>
+          <Text style={{alignSelf: "center", fontWeight: "400", marginTop: 16}}>
             {"Search More for " + textinput}
           </Text>
         )}

@@ -74,15 +74,15 @@ function ReferAndEarn({navigation}) {
           <View style={{width: "100%", height: 200, backgroundColor: "gray"}} />
         </Shimmer>
       )}
-      <Text style={{alignSelf: "center", marginTop: 20, fontWeight: "300"}}>
+      <Text style={{alignSelf: "center", marginTop: 20, fontWeight: "400"}}>
         {t("YOUR_REFERRAL_CODE")}
       </Text>
       <View style={styles.codeView}>
         <Text style={{fontWeight: "600", fontSize: 16}}>{data.refer_earn_code}</Text>
       </View>
       <View style={{marginHorizontal: 16}}>
-        <HTMLRender html={data.htmlMsg || "<b></b>"} baseFontStyle={{fontWeight: "300"}} />
-        <Text style={{marginTop: 30, fontWeight: "300"}}>
+        <HTMLRender html={data.htmlMsg || "<b></b>"} baseFontStyle={{fontWeight: "400"}} />
+        <Text style={{marginTop: 30, fontWeight: "400"}}>
           Referral Valid upto {data.refer_earn_uses} friends.
         </Text>
       </View>
