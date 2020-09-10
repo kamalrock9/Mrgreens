@@ -8,9 +8,9 @@ import {WooCommerce, ApiClient} from "service";
 import {updateBilling} from "../../store/actions";
 import Toast from "react-native-simple-toast";
 
-function user() {
-  return useSelector(state => state.user);
-}
+// function user() {
+//   return useSelector(state => state.user);
+// }
 
 const initialState = {
   first_name: "",
@@ -153,6 +153,7 @@ function BillingAddress() {
     } else {
       WooCommerce.post("customers/" + user.id, data).then(res => {
         if (res.status == 200) {
+          console.log(res);
           dispatchAction(updateBilling(param));
         } else {
           Toast.show("Nothing to update", Toast.LONG);
@@ -229,6 +230,7 @@ function BillingAddress() {
           onChangeText={onChangeCompany}
         />
         <FloatingTextinput
+          caretHidden
           label={t("EMAIL")}
           labelColor="#000000"
           style={{color: "#000000"}}

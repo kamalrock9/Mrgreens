@@ -21,7 +21,6 @@ import {ApiClient} from "service";
 import {useTranslation} from "react-i18next";
 import OneSignal from "react-native-onesignal";
 import Carousel from "react-native-snap-carousel";
-import FitImage from "react-native-fit-image";
 
 const {width, height} = Dimensions.get("window");
 function HomeScreen({navigation}) {
@@ -167,14 +166,18 @@ function HomeScreen({navigation}) {
             renderItem={_renderItemCrousel}
             onSnapToItem={index => setactiveIndex(index)}
           />
-
+          {/* 
           <SectonHeader
             style={{marginTop: 4}}
             title={t("ALL_CATEGORIES")}
-            titleEnd={t("VIEW_ALL")}
+            // titleEnd={t("VIEW_ALL")}
             onPress={openCategories}
             onPressArgs={["CategoryScreen"]}
-          />
+          /> */}
+
+          <View style={[styles.containerCat, {marginTop: 4}]}>
+            <Text style={styles.title}>{t("ALL_CATEGORIES")}</Text>
+          </View>
 
           <FlatList
             style={{flex: 1}}
@@ -277,6 +280,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  containerCat: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    paddingHorizontal: 12,
+    justifyContent: "space-between",
+    marginTop: 16,
+  },
+  title: {
+    fontWeight: "600",
   },
 });
 

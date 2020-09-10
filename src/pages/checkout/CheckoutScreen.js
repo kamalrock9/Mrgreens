@@ -8,9 +8,9 @@ import Review from "../Review";
 import StepIndicator from "react-native-step-indicator";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import Toast from "react-native-simple-toast";
-import {ApiClient} from "service";
+import {ApiClient, WooCommerce} from "service";
 import {isEmpty} from "lodash";
-import {updateShipping} from "store/actions";
+import {updateBilling, updateShipping} from "../../store/actions";
 import Constants from "../../service/Config";
 
 const {width} = Dimensions.get("window");
@@ -59,10 +59,8 @@ function CheckoutScreen({navigation}) {
       pincode: postcode,
     };
     let URL = Constants.baseURL + Constants.path;
-    console.log(param);
     ApiClient.post(URL + "/checkpincode/", param)
       .then(({data}) => {
-        console.log(data);
         if (data.delivery) {
           setStepPos(pos);
         } else {
@@ -82,18 +80,20 @@ function CheckoutScreen({navigation}) {
         updateShipping({
           ...user.shipping,
           first_name: billing.first_name,
+          last_name: billing.last_name,
           country: billing.country,
           state: billing.state,
           city: billing.city,
+          company: billing.company,
           postcode: billing.postcode,
           address_1: billing.address_1,
+          address_2: billing.address_2,
         }),
       );
     }
   });
 
   const orderData = text => {
-    console.log(text);
     SetorderData(text);
   };
 
@@ -121,7 +121,6 @@ function CheckoutScreen({navigation}) {
             if (item.delivery) data[item.product_id] = item.delivery_date;
           }
         }
-        console.log("order" + orderdata.chosen_gateway);
         let u = user && user.id ? "?user_id=" + user.id : "?user_id=";
         let p = "&payment_method=" + orderdata.chosen_gateway;
         let c = "&shipping_method=" + orderdata.chosen_shipping_method;
@@ -131,8 +130,6 @@ function CheckoutScreen({navigation}) {
         ApiClient.post("/checkout/new-order" + u + p + c + pw, data)
           .then(resp => {
             setloading(false);
-            console.log("checkout screen");
-            console.log(resp);
             ApiClient.get("/cart/clear")
               .then(res => {})
               .catch(error => {
@@ -171,9 +168,74 @@ function CheckoutScreen({navigation}) {
       ) {
         Toast.show("Please enter the required filled");
       } else if (pincode_active) {
-        console.log("Shii");
         ApiCall(user.shipping.postcode, 3);
       } else {
+        if (shipToDifferent) {
+          let billingParam = {
+            first_name: billing.first_name,
+            last_name: billing.last_name,
+            company: billing.company,
+            email: billing.email,
+            phone: billing.phone,
+            city: billing.city,
+            state: billing.state,
+            postcode: billing.postcode,
+            address_1: billing.address_1,
+            address_2: billing.address_2,
+            country: billing.country,
+          };
+          let shippingParam = {
+            first_name: billing.first_name,
+            last_name: billing.last_name,
+            company: billing.company,
+            city: billing.city,
+            state: billing.state,
+            postcode: billing.postcode,
+            address_1: billing.address_1,
+            address_2: billing.address_2,
+            country: billing.country,
+          };
+          console.log(billingParam);
+
+          let data = {};
+          data.billing = billingParam;
+          data.shipping = shippingParam;
+
+          WooCommerce.post("customers/" + user.id, data).then(res => {
+            if (res.status == 200) {
+              console.log(res);
+              dispatch(updateBilling(billingParam));
+              dispatch(updateShipping(shippingParam));
+            } else {
+              Toast.show("Nothing to update", Toast.LONG);
+            }
+          });
+        } else {
+          let param = {
+            first_name: shipping.first_name,
+            last_name: shipping.last_name,
+            company: shipping.company,
+            city: shipping.city,
+            state: shipping.state,
+            postcode: shipping.postcode,
+            address_1: shipping.address_1,
+            address_2: shipping.address_2,
+            country: shipping.country,
+          };
+          console.log(param);
+
+          let data = {};
+          data.shipping = param;
+
+          WooCommerce.post("customers/" + user.id, data).then(res => {
+            console.log(res);
+            if (res.status == 200) {
+              dispatch(updateShipping(param));
+            } else {
+              Toast.show("Nothing to update", Toast.LONG);
+            }
+          });
+        }
         setStepPos(3);
       }
     } else if (stepPos == 0) {
@@ -192,6 +254,38 @@ function CheckoutScreen({navigation}) {
       } else if (pincode_active) {
         ApiCall(user.billing.postcode, 2);
       } else {
+        let param = {
+          first_name: billing.first_name,
+          last_name: billing.last_name,
+          company: billing.company,
+          email: billing.email,
+          phone: billing.phone,
+          city: billing.city,
+          state: billing.state,
+          postcode: billing.postcode,
+          address_1: billing.address_1,
+          address_2: billing.address_2,
+          country: billing.country,
+        };
+        // console.log(param);
+
+        let data = {};
+        data.billing = param;
+
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!reg.test(billing.email)) {
+          Toast.show("Your email address is not correct", Toast.LONG);
+          return;
+        }
+        WooCommerce.post("customers/" + user.id, data).then(res => {
+          if (res.status == 200) {
+            console.log(res);
+            dispatch(updateBilling(param));
+          } else {
+            Toast.show("Nothing to update", Toast.LONG);
+          }
+        });
+
         setStepPos(2);
       }
     }

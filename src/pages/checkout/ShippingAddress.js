@@ -5,7 +5,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {CustomPicker} from "react-native-custom-picker";
 import {useNavigation} from "react-navigation-hooks";
-import {updateShipping} from "store/actions";
+import {updateShipping} from "../../store/actions";
 
 function ShippingAddresss(props) {
   const navigation = useNavigation();

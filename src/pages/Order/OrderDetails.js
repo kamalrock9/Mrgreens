@@ -49,7 +49,7 @@ function OrderDetails({navigation}) {
   const _listFooter = () => {
     return (
       <View>
-        <View style={styles.line}></View>
+        <View style={styles.line} />
         <Text style={styles.heading}>{t("ORDER_SUMMARY")}</Text>
         <View style={styles.footerSummaryView}>
           <Text style={styles.text}>Status</Text>
@@ -87,7 +87,8 @@ function OrderDetails({navigation}) {
             flex: 1,
             marginVertical: 5,
             paddingHorizontal: 16,
-          }}></View>
+          }}
+        />
         <View style={styles.footerSummaryView}>
           <Text style={[styles.text, {fontWeight: "600"}]}>{t("TOTAL") + " Amount"}</Text>
           <Text style={[styles.text, {fontWeight: "600", color: "#000000"}]}>
@@ -96,15 +97,15 @@ function OrderDetails({navigation}) {
               : (Number(item.total) + Number(item.total_tax)).toFixed(2) + "(Inc. Taxes)"}
           </Text>
         </View>
-        <View style={styles.line}></View>
+        <View style={styles.line} />
         <Text style={styles.heading}>{t("ADDRESS_INFORMATION")}</Text>
         <View style={styles.card}>
           <Text style={{fontSize: 14, fontWeight: "600", color: "#757575"}}>
             {t("BILLING") + " " + t("ADDRESS")}
           </Text>
-          <Text style={styles.billingtxt}>
-            {item.billing.company != "" ? item.billing.company : null}
-          </Text>
+          {!isEmpty(item.billing.company) && (
+            <Text style={styles.billingtxt}>{item.billing.company}</Text>
+          )}
           <Text style={styles.billingtxt}>
             {item.billing.first_name && item.billing.last_name
               ? item.billing.first_name + " " + item.billing.last_name
@@ -112,9 +113,9 @@ function OrderDetails({navigation}) {
               ? item.billing.first_name
               : null}
           </Text>
-          <Text style={styles.billingtxt}>
-            {item.billing.address_1 ? item.billing.address_1 : null}
-          </Text>
+          {!isEmpty(item.billing.address_1) && (
+            <Text style={styles.billingtxt}>{item.billing.address_1}</Text>
+          )}
           {!isEmpty(item.billing.address_2) && (
             <Text style={styles.billingtxt}>{item.billing.address_2}</Text>
           )}
@@ -129,9 +130,9 @@ function OrderDetails({navigation}) {
           <Text style={{fontSize: 14, fontWeight: "600", color: "#757575"}}>
             {t("SHIPPING") + " " + t("ADDRESS")}
           </Text>
-          <Text style={styles.billingtxt}>
-            {item.shipping.company != "" ? item.shipping.company : null}
-          </Text>
+          {!isEmpty(item.shipping.company) && (
+            <Text style={styles.billingtxt}>{item.shipping.company}</Text>
+          )}
           <Text style={styles.billingtxt}>
             {item.shipping.first_name && item.shipping.last_name
               ? item.shipping.first_name + " " + item.shipping.last_name
@@ -139,9 +140,9 @@ function OrderDetails({navigation}) {
               ? item.shipping.first_name
               : null}
           </Text>
-          <Text style={styles.billingtxt}>
-            {item.shipping.address_1 ? item.shipping.address_1 : null}
-          </Text>
+          {!isEmpty(item.shipping.address_1) && (
+            <Text style={styles.billingtxt}>{item.shipping.address_1}</Text>
+          )}
           {!isEmpty(item.shipping.address_2) && (
             <Text style={styles.billingtxt}>{item.shipping.address_2}</Text>
           )}
@@ -165,7 +166,8 @@ function OrderDetails({navigation}) {
           width: "100%",
           marginVertical: 10,
           marginHorizontal: 16,
-        }}></View>
+        }}
+      />
     );
   };
 
